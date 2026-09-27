@@ -20,7 +20,11 @@ export const metadata: Metadata = {
     "Gmcutz Barber Studio & TRESSA Streetwear — exklusives Keller-Studio, Signature Cuts, Streetwear & Grooming Essentials.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html
       lang="de"
