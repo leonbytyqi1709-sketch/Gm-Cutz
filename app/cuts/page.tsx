@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Scissors, Sparkles, CheckCircle2, HelpCircle } from "lucide-react";
 import FadeIn from "@/components/FadeIn";
 import Booking from "./Booking";
+import CutsGallery from "@/components/CutsGallery";
 
 const signatureServices = [
   {
@@ -226,6 +227,9 @@ export default function CutsPage() {
           ))}
         </div>
       </section>
+
+      {/* Cuts Gallery: New portfolio gallery grouped by category */}
+      <CutsGallery />
 
       {/* FAQ Section */}
       <section className="mt-28 border-t border-white/10 pt-16">
