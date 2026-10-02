@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { MapPin, Clock, Scissors, Shield, Sparkles, CheckCircle2 } from "lucide-react";
+import Link from "next/link";
+import { MapPin, Clock, Scissors, Shield, Sparkles, CheckCircle2, Phone, Mail, Calendar } from "lucide-react";
 import IgIcon from "@/components/IgIcon";
 import FadeIn from "@/components/FadeIn";
 
@@ -160,7 +161,7 @@ export default function StudioPage() {
                 <div>
                   <p className="text-xs font-bold text-warm">DISCRETE LOCATION</p>
                   <p className="mt-1 text-xs text-muted">
-                    Die exakte Adresse und Wegbeschreibung erhältst du sofort nach deiner Terminbestätigung per Instagram-DM.
+                    Die exakte Adresse und Anfahrtsbeschreibung erhältst du direkt in deiner Buchungsbestätigung und in deinem Kalendereintrag.
                   </p>
                 </div>
               </div>
@@ -169,11 +170,11 @@ export default function StudioPage() {
                 <Clock className="text-amber mt-0.5 shrink-0" size={20} />
                 <div>
                   <p className="text-xs font-bold text-warm">ÖFFNUNGSZEITEN & SLOTS</p>
-                  <p className="mt-1 text-xs text-muted">
-                    Montag — Samstag · 10:00 — 18:00 Uhr
-                    <br />
-                    Ausschließlich mit persönlicher Voranmeldung.
-                  </p>
+                  <div className="mt-1.5 space-y-1 text-xs text-muted">
+                    <p><strong className="text-warm">Mo — Fr:</strong> 15:30 — 21:30 Uhr</p>
+                    <p><strong className="text-warm">Sa — So:</strong> 13:00 — 21:00 Uhr</p>
+                    <p className="text-[11px] text-amber/80 pt-1">Ausschließlich mit persönlicher Voranmeldung.</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -187,10 +188,30 @@ export default function StudioPage() {
                   BEREIT FÜR DEINEN BESUCH?
                 </h3>
                 <p className="mt-3 text-xs leading-relaxed text-muted">
-                  Schreib Gio einfach eine kurze Nachricht auf Instagram mit deinem Wunschtag und dem gewünschten Service. Schnelle Antwort garantiert.
+                  Buche deinen Slot direkt online oder kontaktiere Gio telefonisch bzw. via WhatsApp und Instagram bei speziellen Fragen.
                 </p>
 
-                <div className="mt-6 space-y-2 text-xs text-muted">
+                {/* Direct Contact Data */}
+                <div className="mt-6 space-y-2.5 rounded-xl border border-white/5 bg-black/40 p-4 text-xs">
+                  <div>
+                    <a
+                      href="tel:+4915115565427"
+                      className="flex items-center gap-2 font-bold text-warm transition hover:text-amber"
+                    >
+                      <Phone size={14} className="text-amber" /> +49 151 15565427
+                    </a>
+                  </div>
+                  <div>
+                    <a
+                      href="mailto:gmcutzz774@gmail.com"
+                      className="flex items-center gap-2 text-muted transition hover:text-amber"
+                    >
+                      <Mail size={14} className="text-amber" /> gmcutzz774@gmail.com
+                    </a>
+                  </div>
+                </div>
+
+                <div className="mt-4 space-y-2 text-xs text-muted">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 size={14} className="text-amber" />
                     <span>Keine Wartezeit vor Ort</span>
@@ -206,14 +227,22 @@ export default function StudioPage() {
                 </div>
               </div>
 
-              <a
-                href="https://ig.me/m/gmcutz_z"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-shimmer mt-8 flex items-center justify-center gap-2 rounded-full border border-amber/60 py-4 text-xs font-bold tracking-[0.2em] text-warm transition hover:border-amber hover:text-amber"
-              >
-                <IgIcon size={16} /> JETZT GIO VIA INSTAGRAM SCHREIBEN
-              </a>
+              <div className="mt-8 flex flex-col sm:flex-row gap-3">
+                <Link
+                  href="/cuts#booking"
+                  className="btn-shimmer flex flex-1 items-center justify-center gap-2 rounded-full border border-amber bg-amber/15 py-3.5 text-xs font-bold tracking-[0.2em] text-warm transition hover:bg-amber hover:text-black"
+                >
+                  <Calendar size={14} /> TERMIN RESERVIEREN
+                </Link>
+                <a
+                  href="https://wa.me/4915115565427"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 rounded-full border border-white/10 px-5 py-3.5 text-xs font-bold tracking-widest text-muted transition hover:border-amber/50 hover:text-amber"
+                >
+                  WHATSAPP
+                </a>
+              </div>
             </div>
           </div>
         </FadeIn>

@@ -53,7 +53,7 @@ const faqs = [
   },
   {
     q: "Wo genau befindet sich das Keller-Studio?",
-    a: "Es ist ein privates Studio, um maximale Ruhe und Exklusivität zu gewährleisten. Die genaue Anschrift erhältst du direkt nach deiner Terminvereinbarung via Instagram-DM.",
+    a: "Es ist ein privates Studio, um maximale Ruhe und Exklusivität zu gewährleisten. Die genaue Anschrift erhältst du direkt in deiner Buchungsbestätigung und in deinem Kalendereintrag.",
   },
   {
     q: "Welche Bezahlmöglichkeiten gibt es?",
@@ -172,11 +172,11 @@ export default function CutsPage() {
       </section>
 
       {/* Interactive Booking Module */}
-      <section className="mt-20">
+      <section id="booking" className="mt-20 scroll-mt-28">
         <FadeIn>
           <div className="mb-8 text-center">
             <span className="rounded-full border border-amber/40 bg-amber/10 px-3.5 py-1 text-[10px] font-bold tracking-[0.3em] text-amber">
-              INSTAGRAM CONCIERGE
+              VIP ONLINE BOOKING
             </span>
             <h2 className="mt-3 text-3xl font-black text-warm sm:text-4xl">
               DEINEN TERMIN KONFIGURIEREN

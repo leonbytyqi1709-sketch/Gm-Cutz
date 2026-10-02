@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Scissors, ArrowRight } from "lucide-react";
+import { Scissors, ArrowRight, Calendar } from "lucide-react";
 import IgIcon from "./IgIcon";
 
 interface CutItem {
@@ -96,14 +96,12 @@ export default function CutLookbook() {
               </div>
 
               <div className="mt-8 pt-4 border-t border-white/5 flex items-center justify-between">
-                <a
-                  href={bookingUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-shimmer inline-flex items-center gap-2 rounded-full border border-amber/50 px-5 py-2.5 text-xs font-bold tracking-widest text-warm transition hover:border-amber hover:text-amber"
+                <Link
+                  href="/cuts#booking"
+                  className="btn-shimmer inline-flex items-center gap-2 rounded-full border border-amber/50 bg-amber/10 px-5 py-2.5 text-xs font-bold tracking-widest text-warm transition hover:bg-amber hover:text-black"
                 >
-                  <IgIcon size={14} /> TERMIN ANFRAGEN
-                </a>
+                  <Calendar size={13} className="text-amber" /> ONLINE BUCHEN
+                </Link>
                 <Link
                   href="/cuts"
                   className="text-xs font-semibold tracking-wider text-muted hover:text-warm transition"

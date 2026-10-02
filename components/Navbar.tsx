@@ -77,14 +77,12 @@ export default function Navbar() {
             );
           })}
 
-          <a
-            href="https://ig.me/m/gmcutz_z"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/cuts#booking"
             className="btn-shimmer flex items-center gap-2 rounded-full border border-amber/50 px-5 py-2 text-xs font-bold tracking-[0.2em] text-warm transition hover:border-amber hover:text-amber"
           >
-            <IgIcon size={14} /> BOOKING
-          </a>
+            TERMIN BUCHEN
+          </Link>
         </div>
 
         {/* Mobile toggle button */}
@@ -120,14 +118,13 @@ export default function Navbar() {
               </Link>
             ))}
 
-            <a
-              href="https://ig.me/m/gmcutz_z"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/cuts#booking"
+              onClick={() => setOpen(false)}
               className="mt-4 flex items-center justify-center gap-2 rounded-full border border-amber/50 bg-amber/10 py-3.5 text-xs font-bold tracking-widest text-amber"
             >
-              <IgIcon size={16} /> BOOKING (INSTAGRAM)
-            </a>
+              TERMIN ONLINE BUCHEN
+            </Link>
           </div>
         </div>
       )}

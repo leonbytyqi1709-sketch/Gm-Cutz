@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ShieldCheck, Sparkles, MapPin, Scissors, ArrowRight } from "lucide-react";
+import { ShieldCheck, Sparkles, MapPin, Scissors, ArrowRight, Calendar } from "lucide-react";
 import IgIcon from "./IgIcon";
 
 export default function StudioVibe() {
@@ -109,14 +109,12 @@ export default function StudioVibe() {
           </div>
 
           <div className="mt-10 flex flex-wrap gap-4">
-            <a
-              href="https://ig.me/m/gmcutz_z"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-shimmer flex items-center gap-2 rounded-full border border-amber/60 px-8 py-3.5 text-xs font-bold tracking-[0.25em] text-warm transition hover:border-amber hover:text-amber"
+            <Link
+              href="/cuts#booking"
+              className="btn-shimmer flex items-center gap-2 rounded-full border border-amber/60 bg-amber/15 px-8 py-3.5 text-xs font-bold tracking-[0.25em] text-warm transition hover:bg-amber hover:text-black shadow-[0_0_25px_rgba(232,186,132,0.2)]"
             >
-              <IgIcon size={16} /> TERMIN ANFRAGEN
-            </a>
+              <Calendar size={15} /> TERMIN RESERVIEREN
+            </Link>
             <Link
               href="/studio"
               className="flex items-center gap-2 rounded-full border border-white/10 px-6 py-3.5 text-xs font-semibold tracking-widest text-muted transition hover:border-white/30 hover:text-warm"

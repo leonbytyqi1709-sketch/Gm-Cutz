@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Phone, Mail, Calendar, Clock } from "lucide-react";
 import IgIcon from "./IgIcon";
 
 export default function Footer() {
@@ -81,23 +81,60 @@ export default function Footer() {
           {/* Social & Booking */}
           <div className="md:col-span-4">
             <h4 className="text-[10px] font-bold tracking-[0.3em] text-amber uppercase">
-              BOOKING & SOCIAL
+              KONTAKT & BOOKING
             </h4>
-            <p className="mt-4 text-xs text-muted">
-              Termine & Bestellungen werden persönlich über Instagram abgewickelt:
-            </p>
 
-            <a
-              href="https://ig.me/m/gmcutz_z"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-2 rounded-xl border border-white/10 bg-card px-4 py-3 text-xs font-bold text-warm transition hover:border-amber/50 hover:text-amber"
-            >
-              <IgIcon size={16} /> @gmcutz_z <ArrowUpRight size={14} className="text-muted" />
-            </a>
+            <div className="mt-4 space-y-2.5 text-xs text-muted">
+              <div>
+                <a
+                  href="tel:+4915115565427"
+                  className="flex items-center gap-2 font-bold text-warm transition hover:text-amber"
+                >
+                  <Phone size={14} className="text-amber" /> +49 151 15565427
+                </a>
+              </div>
 
-            <div className="mt-4 text-[11px] text-muted/70">
-              MO — SA · 10:00 — 18:00 Uhr
+              <div>
+                <a
+                  href="mailto:gmcutzz774@gmail.com"
+                  className="flex items-center gap-2 text-muted transition hover:text-amber"
+                >
+                  <Mail size={14} className="text-amber" /> gmcutzz774@gmail.com
+                </a>
+              </div>
+            </div>
+
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Link
+                href="/cuts#booking"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-amber/40 bg-amber/10 px-3.5 py-2 text-xs font-bold text-amber transition hover:bg-amber hover:text-black"
+              >
+                <Calendar size={13} /> ONLINE BUCHEN
+              </Link>
+
+              <a
+                href="https://ig.me/m/gmcutz_z"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-card px-3.5 py-2 text-xs font-bold text-warm transition hover:border-amber/50 hover:text-amber"
+              >
+                <IgIcon size={14} /> @gmcutz_z <ArrowUpRight size={12} className="text-muted" />
+              </a>
+            </div>
+
+            {/* Opening Hours */}
+            <div className="mt-5 rounded-xl border border-white/5 bg-black/40 p-3 text-[11px] text-muted space-y-1">
+              <div className="flex items-center gap-1.5 font-bold text-warm/90">
+                <Clock size={12} className="text-amber" /> STUDIO ÖFFNUNGSZEITEN
+              </div>
+              <div className="flex justify-between">
+                <span>Mo — Fr:</span>
+                <span className="font-semibold text-warm">15:30 — 21:30 Uhr</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Sa — So:</span>
+                <span className="font-semibold text-warm">13:00 — 21:00 Uhr</span>
+              </div>
             </div>
           </div>
         </div>

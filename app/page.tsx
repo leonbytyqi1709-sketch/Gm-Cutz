@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Scissors, Shirt, Sparkles, ArrowRight } from "lucide-react";
+import { Scissors, Shirt, Sparkles, ArrowRight, Calendar } from "lucide-react";
 import FadeIn from "@/components/FadeIn";
 import Marquee from "@/components/Marquee";
 import CutLookbook from "@/components/CutLookbook";
@@ -33,19 +33,17 @@ export default function Home() {
 
               {/* Call-to-Action Buttons */}
               <div className="mt-9 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
-                <a
-                  href="https://ig.me/m/gmcutz_z"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-shimmer flex items-center gap-2 rounded-full border border-amber/60 px-8 py-4 text-xs font-bold tracking-[0.25em] text-warm transition hover:border-amber hover:text-amber"
-                >
-                  <IgIcon size={16} /> TERMIN BUCHEN
-                </a>
                 <Link
-                  href="/tressa"
+                  href="/cuts#booking"
+                  className="btn-shimmer flex items-center gap-2 rounded-full border border-amber/60 bg-amber/15 px-8 py-4 text-xs font-bold tracking-[0.25em] text-warm transition hover:bg-amber hover:text-black shadow-[0_0_30px_rgba(232,186,132,0.25)]"
+                >
+                  <Calendar size={16} /> TERMIN ONLINE BUCHEN
+                </Link>
+                <Link
+                  href="/cuts"
                   className="rounded-full border border-white/10 bg-white/5 px-6 py-4 text-xs font-semibold tracking-[0.2em] text-muted transition hover:border-white/30 hover:text-warm"
                 >
-                  TRESSA SHOP
+                  SERVICES ANSEHEN
                 </Link>
               </div>
 
@@ -223,20 +221,20 @@ export default function Home() {
             </p>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+              <Link
+                href="/cuts#booking"
+                className="btn-shimmer flex items-center gap-2 rounded-full border border-amber/60 bg-amber/15 px-8 py-4 text-xs font-bold tracking-[0.25em] text-warm transition hover:bg-amber hover:text-black shadow-[0_0_30px_rgba(232,186,132,0.25)]"
+              >
+                <Calendar size={16} /> JETZT TERMIN ONLINE BUCHEN
+              </Link>
               <a
                 href="https://ig.me/m/gmcutz_z"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-shimmer flex items-center gap-2 rounded-full border border-amber/60 px-8 py-4 text-xs font-bold tracking-[0.25em] text-warm transition hover:border-amber hover:text-amber"
+                className="flex items-center gap-2 rounded-full border border-white/15 px-8 py-4 text-xs font-semibold tracking-widest text-muted transition hover:border-white/30 hover:text-warm"
               >
-                <IgIcon size={16} /> TERMIN BUCHEN (@gmcutz_z)
+                <IgIcon size={16} /> INSTAGRAM (@gmcutz_z)
               </a>
-              <Link
-                href="/cuts"
-                className="rounded-full border border-white/15 px-8 py-4 text-xs font-semibold tracking-widest text-muted transition hover:border-white/30 hover:text-warm"
-              >
-                SERVICES ANSEHEN
-              </Link>
             </div>
           </FadeIn>
         </div>
