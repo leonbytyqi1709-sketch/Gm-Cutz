@@ -18,15 +18,19 @@ export interface BookingRecord {
 
 const LOCAL_STORAGE_FILE = path.join(process.cwd(), "data", "bookings.json");
 
-// Hilfsfunktion: Stellt sicher, dass der lokale Datenordner existiert
+// Hilfsfunktion: Stellt sicher, dass der lokale Datenordner existiert (Serverless-Safe)
 async function ensureLocalFile(): Promise<BookingRecord[]> {
   try {
-    const dir = path.dirname(LOCAL_STORAGE_FILE);
-    await fs.mkdir(dir, { recursive: true });
     const content = await fs.readFile(LOCAL_STORAGE_FILE, "utf-8");
     return JSON.parse(content);
   } catch {
-    await fs.writeFile(LOCAL_STORAGE_FILE, JSON.stringify([], null, 2), "utf-8");
+    try {
+      const dir = path.dirname(LOCAL_STORAGE_FILE);
+      await fs.mkdir(dir, { recursive: true });
+      await fs.writeFile(LOCAL_STORAGE_FILE, JSON.stringify([], null, 2), "utf-8");
+    } catch {
+      // Ignoriere Schreibfehler auf Serverless / Read-Only Filesystemen (z. B. Vercel)
+    }
     return [];
   }
 }
@@ -87,9 +91,14 @@ export async function getBookingsByDate(dateStr: string): Promise<BookingRecord[
     }
   }
 
-  // Fallback: Lokale JSON-Datei
-  const allBookings = await ensureLocalFile();
-  return allBookings.filter((b) => b.date === dateStr && b.status === "confirmed");
+  // Fallback: Lokale JSON-Datei (Serverless-Safe)
+  try {
+    const allBookings = await ensureLocalFile();
+    return allBookings.filter((b) => b.date === dateStr && b.status === "confirmed");
+  } catch (err) {
+    console.error("[Database] Fallback error:", err);
+    return [];
+  }
 }
 
 /**
@@ -149,17 +158,26 @@ export async function createBooking(
   }
 
   // Fallback: Lokale JSON-Datei
-  const allBookings = await ensureLocalFile();
-  const isTaken = allBookings.some(
-    (b) => b.date === newBooking.date && b.time === newBooking.time && b.status === "confirmed"
-  );
+  try {
+    const allBookings = await ensureLocalFile();
+    const isTaken = allBookings.some(
+      (b) => b.date === newBooking.date && b.time === newBooking.time && b.status === "confirmed"
+    );
 
-  if (isTaken) {
-    throw new Error("Dieser Zeitslot ist leider bereits vergeben.");
+    if (isTaken) {
+      throw new Error("Dieser Zeitslot ist leider bereits vergeben.");
+    }
+
+    allBookings.push(newBooking);
+    await fs.writeFile(LOCAL_STORAGE_FILE, JSON.stringify(allBookings, null, 2), "utf-8");
+    return newBooking;
+  } catch (err: any) {
+    if (err?.message?.includes("bereits vergeben")) {
+      throw err;
+    }
+    console.error("[Database] Local fallback write error:", err);
+    throw new Error(
+      "Datenbankverbindung nicht verfügbar. Bitte DATABASE_URL in den Vercel Environment Variables konfigurieren."
+    );
   }
-
-  allBookings.push(newBooking);
-  await fs.writeFile(LOCAL_STORAGE_FILE, JSON.stringify(allBookings, null, 2), "utf-8");
-
-  return newBooking;
 }

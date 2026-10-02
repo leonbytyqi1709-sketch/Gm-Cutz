@@ -66,7 +66,7 @@ const addons: AddonOption[] = [
   { id: "spray", name: "Tressa Texture Spray Finish" },
 ];
 
-// Erzeugt die nächsten 14 buchbaren Tage ab heute
+// Erzeugt die nächsten 14 buchbaren Tage ab heute (Lokale Zeitzone sicher)
 function generateNextDays(count = 14) {
   const result: { dateStr: string; label: string; weekday: string }[] = [];
   const today = new Date();
@@ -74,7 +74,10 @@ function generateNextDays(count = 14) {
   for (let i = 0; i < count; i++) {
     const d = new Date(today);
     d.setDate(today.getDate() + i);
-    const dateStr = d.toISOString().split("T")[0];
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    const dateStr = `${year}-${month}-${day}`;
     const weekday = d.toLocaleDateString("de-DE", { weekday: "short" });
     const label = d.toLocaleDateString("de-DE", { day: "2-digit", month: "short" });
     result.push({ dateStr, label, weekday });
@@ -122,8 +125,14 @@ export default function Booking() {
     setSelectedTime("");
     setErrorMsg(null);
 
-    fetch(`/api/bookings/slots?date=${selectedDate}`)
-      .then((res) => res.json())
+    fetch(`/api/bookings/slots?date=${selectedDate}`, { cache: "no-store" })
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || "Fehler beim Laden der Zeitslots");
+        }
+        return data;
+      })
       .then((data) => {
         if (!isMounted) return;
         if (data.slots && Array.isArray(data.slots)) {
@@ -133,10 +142,16 @@ export default function Booking() {
           if (firstFree) {
             setSelectedTime(firstFree.time);
           }
+        } else {
+          setSlots([]);
         }
       })
       .catch((err) => {
         console.error("Fehler beim Laden der Slots:", err);
+        if (isMounted) {
+          setErrorMsg(err.message || "Fehler beim Laden der Zeitslots");
+          setSlots([]);
+        }
       })
       .finally(() => {
         if (isMounted) setLoadingSlots(false);

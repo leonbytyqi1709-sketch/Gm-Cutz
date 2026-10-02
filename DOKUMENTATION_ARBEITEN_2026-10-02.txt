@@ -1,0 +1,150 @@
+================================================================================
+PROJEKT-DOKUMENTATION: GM-CUTZ WEBSEITE & TERMINBUCHUNGSSYSTEM
+Datum: 02. Oktober 2026
+Projektpfad: C:\Users\schule\Desktop\GM-Cutz Webseite
+Repository: https://github.com/leonbytyqi1709-sketch/Gm-Cutz.git (Branch: main)
+================================================================================
+
+1. ÜBERSICHT & ZIELSETZUNG
+--------------------------------------------------------------------------------
+Am 02.10.2026 wurde die GM-Cutz Webseite um ein vollständig integriertes,
+eigenständiges 1-on-1 Terminbuchungssystem mit Cloud-Datenbank (Neon Postgres),
+dynamischer Zeitslot-Verwaltung, automatisierter E-Mail-Benachrichtigung für 
+Kunden und Friseur (Gio) sowie Kontakt- und WhatsApp-Direktanbindungen erweitert.
+Zudem wurden bestehende statische Instagram-Links durch den interaktiven Buchungs-
+ablauf ersetzt und umfangreiche Anti-Spam-Optimierungen vorgenommen.
+
+
+2. ENTWICKELTE SYSTEME & FEATURES
+--------------------------------------------------------------------------------
+
+2.1 INTERAKTIVES BUCHUNGS-SYSTEM (UI / FRONTEND)
+- Datei: app/cuts/Booking.tsx
+- Moderner, voll responsiver Buchungsdialog im GM-CUTZ Dark/Gold Design.
+- Schritt-für-Schritt-Ablauf:
+    1. Service-Auswahl (z. B. Signature Cut, Skin Fade, Beard Grooming, Combo).
+    2. Add-on-Auswahl (z. B. Bartrasur, Black Mask, Augenbrauen, Haarwäsche).
+    3. Datums- & Kalenderauswahl mit Berücksichtigung der neuen Öffnungszeiten.
+    4. Dynamisches Laden der verfügbaren Uhrzeiten via REST-API.
+    5. Kontaktdatenerfassung (Name, E-Mail, Telefonnummer, Notizen).
+    6. Bestätigungsansicht mit individueller Buchungs-ID (z. B. GM-XXXXXX)
+       und Kalender-Export (.ics).
+
+2.2 ÖFFNUNGSZEITEN & ZEITSLOT-LOGIK
+- Datei: lib/schedule.ts
+- Öffnungszeiten exakt nach Kundenvorgabe hinterlegt:
+    * Montag bis Freitag:  15:30 Uhr – 21:30 Uhr
+    * Samstag und Sonntag: 13:00 Uhr – 21:00 Uhr
+- Automatische 1-Stunden-Slot-Generierung pro Tag.
+- Bei Buchungen am selben Tag: Mindestens 30 Minuten Vorlaufzeit.
+
+2.3 CLOUD-DATENBANK (NEON SERVERLESS POSTGRESQL)
+- Datei: lib/db.ts
+- Integration von Neon Database (@neondatabase/serverless).
+- Tabellenstruktur `bookings`:
+    * id (VARCHAR 64, Primary Key)
+    * name (VARCHAR 255)
+    * email (VARCHAR 255)
+    * phone (VARCHAR 64)
+    * service (VARCHAR 255)
+    * addons (TEXT / JSON)
+    * date (VARCHAR 32, YYYY-MM-DD)
+    * time (VARCHAR 32, HH:mm)
+    * notes (TEXT)
+    * status (VARCHAR 32, default 'confirmed')
+    * created_at (TIMESTAMPTZ)
+- Automatischer lokaler JSON-Fallback (data/bookings.json), falls keine
+  Datenbankverbindung vorliegt.
+
+2.4 REST-API-ENDPUNKTE (BACKEND / NEXT.JS)
+- Endpunkt 1: app/api/bookings/route.ts
+    * POST: Validierung der Buchungsdaten, Verhinderung von Doppelbuchungen,
+      Speichern in Postgres und Anstoß des E-Mail-Versands.
+- Endpunkt 2: app/api/bookings/slots/route.ts
+    * GET (?date=YYYY-MM-DD): Prüft Echtzeit-Verfügbarkeit aller Slots eines
+      Tages gegen bereits bestehende bestätigte Buchungen.
+
+2.5 E-MAIL-SYSTEM & ANTI-SPAM-OPTIMIERUNGEN
+- Datei: lib/email.ts
+- Technologie: Nodemailer über Gmail SMTP (gmcutzz774@gmail.com).
+- Empfänger 1 (Kunde):
+    * Vollständige Buchungsübersicht & Studiodetails.
+    * Generierter Kalender-Anhang (.ics) für Apple Calendar & Google Calendar.
+- Empfänger 2 (Friseur / Admin: gmcutzz774@gmail.com):
+    * Sofortige Benachrichtigung über Neubuchung.
+    * Direkter 1-Klick WhatsApp-Chat-Link zur Kundennummer.
+- Anti-Spam-Maßnahmen:
+    * ICS-Standard: Wechsel von 'METHOD:REQUEST' auf 'METHOD:PUBLISH' (vermeidet
+      die fälschliche Einstufung als Phishing/Besprechungsanfrage).
+    * Bereinigte Betreffzeilen (keine Spam-Emojis).
+    * Korrekter Absender-Header: "GM-CUTZ" <gmcutzz774@gmail.com>.
+    * Multipart-Format: Saubere Plain-Text-Version parallel zum HTML.
+    * Solides E-Mail-HTML-Design ohne auffällige rgba-Stile.
+
+2.6 KONTAKTDATEN & NAVIGATION-UPDATES
+- Offizielle Kontakt-Telefonnummer überall eingepflegt: +49 151 15565427
+- Anpassung aller "Termin buchen"-Buttons auf der gesamten Webseite:
+    * components/Navbar.tsx
+    * components/Footer.tsx
+    * app/page.tsx (Startseite / Hero / CTA)
+    * app/studio/page.tsx (Studio & Private 1-on-1 Sektion)
+    * components/CutLookbook.tsx / components/StudioVibe.tsx
+  -> Öffnen nun direkt den interaktiven Buchungs-Flow statt externer Links.
+
+
+3. WICHTIGE BUGFIXES & ZURÜCKSETZUNGEN
+--------------------------------------------------------------------------------
+1. Fehlende Kunden-Bestätigungsmail:
+   - Ursprünglich ging die Mail nur an den Admin. Wurde erweitert, sodass nun
+     Kunde und Admin separate, maßgeschneiderte Mails erhalten.
+2. Spam-Filterung der Bestätigungs-Mails:
+   - Erfolgreich behoben durch RFC-5546-konforme Kalenderanhänge und
+     Anti-Spam-Header.
+3. Zurücksetzen der Testbuchungen:
+   - Die während der Testphase gebuchten Samstag-Termine (14:00, 15:00, 16:00 Uhr)
+     wurden direkt aus der Neon-PostgreSQL-Datenbank entfernt.
+   - Alle Slots für Samstag sind wieder vollständig frei und buchbar.
+
+
+4. PROJEKTSTRUKTUR (NEUE & MODIFIZIERTE DATEIEN)
+--------------------------------------------------------------------------------
+Modifiziert:
+- .gitignore                     (Sicherheit: .env* und data/ ignoriert)
+- package.json & package-lock    (@neondatabase/serverless, nodemailer, etc.)
+- app/cuts/Booking.tsx           (Zentrales Buchungs-Modal)
+- app/cuts/page.tsx              (Services & Booking Integration)
+- app/page.tsx                   (Startseite CTA Updates)
+- app/studio/page.tsx            (Studio Sektion & Buchung)
+- components/Navbar.tsx          (Header Buchungs-Button)
+- components/Footer.tsx          (Footer Telefon +49 151 15565427 & Buchung)
+- components/CutLookbook.tsx     (Lookbook CTA Integration)
+- components/StudioVibe.tsx      (Studio CTA Integration)
+
+Neu erstellt:
+- app/api/bookings/route.ts       (API: Buchung anlegen)
+- app/api/bookings/slots/route.ts (API: Freie Zeitslots abfragen)
+- lib/db.ts                       (Neon PostgreSQL Verbindung & Queries)
+- lib/schedule.ts                 (Öffnungszeiten- & Slot-Berechnung)
+- lib/email.ts                    (E-Mail-Versand mit Spam-Schutz & ICS)
+- TERMINBUCHUNG_KONZEPT.md        (Architektur- & Systemkonzept)
+
+
+5. GIT- & REPOSITORY-STATUS
+--------------------------------------------------------------------------------
+- Branch: main
+- Letzter Commit: 74399d3
+  "feat: implement full booking system with slot scheduling, database & spam-optimized email notifications"
+- Remote Push: Erfolgreich zu origin/main übertragen.
+- Status: Clean (Working tree clean, up to date).
+- Sensible Daten: Alle Zugangsdaten liegen sicher ausschließlich in der lokalen
+  .env.local und wurden zu keinem Zeitpunkt im Repository veröffentlicht.
+
+
+6. HINWEISE FÜR DEN WEITEREN BETRIEB
+--------------------------------------------------------------------------------
+- Lokaler Dev-Server: Erreichbar unter http://localhost:3000
+- Kundenerstkontakt E-Mail: Sollte bei Erstkontakt eine Mail beim Kunden im Spam
+  landen, hilft das einmalige Anklicken von "Kein Spam". Für maximale
+  Zustellbarkeit (100% Inbox) bei kommerziellem Betrieb empfiehlt sich
+  perspektivisch eine eigene Domain-Adresse (z. B. info@gmcutz.de) über Resend.
+================================================================================
