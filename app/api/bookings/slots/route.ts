@@ -70,8 +70,8 @@ export async function GET(request: Request) {
       } else if (isToday) {
         const [h, m] = time.split(":").map(Number);
         const slotMinutes = h * 60 + m;
-        // Mindestens 60 Minuten (1 Stunde) Vorlaufzeit bei heutigen Buchungen
-        if (slotMinutes <= currentMinutes + 60) {
+        // Mindestens 30 Minuten Vorlaufzeit bei heutigen Buchungen
+        if (slotMinutes <= currentMinutes + 30) {
           isAvailable = false;
         }
       }
