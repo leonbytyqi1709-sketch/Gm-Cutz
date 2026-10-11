@@ -70,7 +70,7 @@ export async function getBookingsByDate(dateStr: string): Promise<BookingRecord[
       const rows = await sql`
         SELECT id, name, email, phone, service, addons, date, time, notes, status, created_at
         FROM bookings
-        WHERE date = ${dateStr} AND status = 'confirmed'
+        WHERE date = ${dateStr} AND status != 'cancelled'
       `;
 
       return rows.map((row: any) => ({
@@ -94,7 +94,7 @@ export async function getBookingsByDate(dateStr: string): Promise<BookingRecord[
   // Fallback: Lokale JSON-Datei (Serverless-Safe)
   try {
     const allBookings = await ensureLocalFile();
-    return allBookings.filter((b) => b.date === dateStr && b.status === "confirmed");
+    return allBookings.filter((b) => b.date === dateStr && b.status !== "cancelled");
   } catch (err) {
     console.error("[Database] Fallback error:", err);
     return [];
@@ -124,7 +124,7 @@ export async function createBooking(
       // Race-Condition Schutz: Prüfen, ob Slot noch frei ist
       const existing = await sql`
         SELECT id FROM bookings
-        WHERE date = ${newBooking.date} AND time = ${newBooking.time} AND status = 'confirmed'
+        WHERE date = ${newBooking.date} AND time = ${newBooking.time} AND status != 'cancelled'
       `;
 
       if (existing.length > 0) {
@@ -161,7 +161,7 @@ export async function createBooking(
   try {
     const allBookings = await ensureLocalFile();
     const isTaken = allBookings.some(
-      (b) => b.date === newBooking.date && b.time === newBooking.time && b.status === "confirmed"
+      (b) => b.date === newBooking.date && b.time === newBooking.time && b.status !== "cancelled"
     );
 
     if (isTaken) {
