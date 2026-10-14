@@ -46,15 +46,6 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* Live Studio Status Pill */}
-        <div className="hidden lg:flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[10px] font-semibold tracking-wider text-emerald-400">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-          </span>
-          STUDIO ACTIVE · SLOTS AVAILABLE
-        </div>
-
         {/* Desktop Links */}
         <div className="hidden items-center gap-8 md:flex">
           {links.map((l) => {
@@ -99,11 +90,6 @@ export default function Navbar() {
       {open && (
         <div className="border-t border-white/10 bg-matte/98 px-6 py-6 backdrop-blur-2xl md:hidden">
           <div className="flex flex-col gap-4">
-            <div className="mb-2 flex items-center gap-2 rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-3 py-1.5 text-[10px] font-semibold text-emerald-400">
-              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-              STUDIO ACTIVE · SLOTS AVAILABLE
-            </div>
-
             {links.map((l) => (
               <Link
                 key={l.href}

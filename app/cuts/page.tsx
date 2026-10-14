@@ -35,11 +35,13 @@ const chemicalTreatments = [
   },
 ];
 
-const kellerGallery = [
-  { src: "/images/keller-1.jpg", title: "Keller-Studio 1", subtitle: "Private Atmosphere" },
-  { src: "/images/keller-2.jpg", title: "Keller-Studio 2", subtitle: "Authentic Vibe" },
-  { src: "/images/keller-3.jpg", title: "Keller-Studio 3", subtitle: "Barber Station" },
-  { src: "/images/keller-4.jpg", title: "Keller-Studio 4", subtitle: "Precision Workspace" },
+const studioGallery = [
+  { src: "/images/studio-1.jpeg", title: "Studio 1", subtitle: "Private Atmosphere" },
+  { src: "/images/studio-2.jpeg", title: "Studio 2", subtitle: "Authentic Vibe" },
+  { src: "/images/studio-3.jpeg", title: "Studio 3", subtitle: "Barber Station" },
+  { src: "/images/studio-4.jpeg", title: "Studio 4", subtitle: "Precision Workspace" },
+  { src: "/images/studio-5.jpeg", title: "Studio 5", subtitle: "Exclusive Details" },
+  { src: "/images/studio-6.jpeg", title: "Studio 6", subtitle: "Master Craft" },
 ];
 
 const faqs = [
@@ -186,7 +188,7 @@ export default function CutsPage() {
         </FadeIn>
       </section>
 
-      {/* Editorial Studio Gallery: Keller-Bilder 1-4 */}
+      {/* Editorial Studio Gallery: Studio-Bilder 1-6 */}
       <section className="mt-28">
         <FadeIn>
           <div className="text-center">
@@ -202,15 +204,15 @@ export default function CutsPage() {
           </div>
         </FadeIn>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {kellerGallery.map((item, i) => (
+        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {studioGallery.map((item, i) => (
             <FadeIn key={item.src} delay={i * 0.08}>
               <div className="group relative aspect-[3/4] overflow-hidden rounded-2xl border border-white/10 bg-card shadow-xl transition-all duration-300 hover:border-amber/50">
                 <Image
                   src={item.src}
                   alt={item.title}
                   fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-90" />
