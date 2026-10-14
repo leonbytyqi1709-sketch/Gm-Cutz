@@ -1,8 +1,8 @@
-import Image from "next/image";
 import { Scissors, Sparkles, CheckCircle2, HelpCircle } from "lucide-react";
 import FadeIn from "@/components/FadeIn";
 import Booking from "./Booking";
 import CutsGallery from "@/components/CutsGallery";
+import StudioGallery from "@/components/StudioGallery";
 
 const signatureServices = [
   {
@@ -35,14 +35,6 @@ const chemicalTreatments = [
   },
 ];
 
-const studioGallery = [
-  { src: "/images/studio-1.jpeg", alt: "Gm-Cutz Studio Impression 1" },
-  { src: "/images/studio-2.jpeg", alt: "Gm-Cutz Studio Impression 2" },
-  { src: "/images/studio-3.jpeg", alt: "Gm-Cutz Studio Impression 3" },
-  { src: "/images/studio-4.jpeg", alt: "Gm-Cutz Studio Impression 4" },
-  { src: "/images/studio-5.jpeg", alt: "Gm-Cutz Studio Impression 5" },
-  { src: "/images/studio-6.jpeg", alt: "Gm-Cutz Studio Impression 6" },
-];
 
 const faqs = [
   {
@@ -188,38 +180,8 @@ export default function CutsPage() {
         </FadeIn>
       </section>
 
-      {/* Editorial Studio Gallery: Studio-Bilder 1-6 */}
-      <section className="mt-28">
-        <FadeIn>
-          <div className="text-center">
-            <span className="text-[10px] font-bold tracking-[0.35em] text-amber">
-              EINBLICKE
-            </span>
-            <h2 className="mt-2 text-3xl font-black tracking-tight text-warm sm:text-4xl">
-              STUDIO GALLERY
-            </h2>
-            <p className="mt-2 text-xs font-semibold tracking-widest text-muted">
-              DAS PRIVATE KELLER-STUDIO IM DETAIL
-            </p>
-          </div>
-        </FadeIn>
-
-        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {studioGallery.map((item, i) => (
-            <FadeIn key={item.src} delay={i * 0.08}>
-              <div className="group relative aspect-[3/4] overflow-hidden rounded-2xl border border-white/10 bg-card shadow-xl transition-all duration-300 hover:border-amber/50">
-                <Image
-                  src={item.src}
-                  alt={item.alt}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-      </section>
+      {/* Studio Gallery with Lightbox Modal */}
+      <StudioGallery />
 
       {/* Cuts Gallery: New portfolio gallery grouped by category */}
       <CutsGallery />
