@@ -36,12 +36,12 @@ const chemicalTreatments = [
 ];
 
 const studioGallery = [
-  { src: "/images/studio-1.jpeg", title: "Studio 1", subtitle: "Private Atmosphere" },
-  { src: "/images/studio-2.jpeg", title: "Studio 2", subtitle: "Authentic Vibe" },
-  { src: "/images/studio-3.jpeg", title: "Studio 3", subtitle: "Barber Station" },
-  { src: "/images/studio-4.jpeg", title: "Studio 4", subtitle: "Precision Workspace" },
-  { src: "/images/studio-5.jpeg", title: "Studio 5", subtitle: "Exclusive Details" },
-  { src: "/images/studio-6.jpeg", title: "Studio 6", subtitle: "Master Craft" },
+  { src: "/images/studio-1.jpeg", alt: "Gm-Cutz Studio Impression 1" },
+  { src: "/images/studio-2.jpeg", alt: "Gm-Cutz Studio Impression 2" },
+  { src: "/images/studio-3.jpeg", alt: "Gm-Cutz Studio Impression 3" },
+  { src: "/images/studio-4.jpeg", alt: "Gm-Cutz Studio Impression 4" },
+  { src: "/images/studio-5.jpeg", alt: "Gm-Cutz Studio Impression 5" },
+  { src: "/images/studio-6.jpeg", alt: "Gm-Cutz Studio Impression 6" },
 ];
 
 const faqs = [
@@ -210,20 +210,11 @@ export default function CutsPage() {
               <div className="group relative aspect-[3/4] overflow-hidden rounded-2xl border border-white/10 bg-card shadow-xl transition-all duration-300 hover:border-amber/50">
                 <Image
                   src={item.src}
-                  alt={item.title}
+                  alt={item.alt}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-90" />
-                <div className="absolute bottom-4 left-4 right-4">
-                  <span className="text-[10px] font-mono tracking-widest text-amber block uppercase">
-                    {item.subtitle}
-                  </span>
-                  <span className="text-sm font-bold text-warm block">
-                    {item.title}
-                  </span>
-                </div>
               </div>
             </FadeIn>
           ))}
