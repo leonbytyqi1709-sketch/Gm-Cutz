@@ -97,6 +97,7 @@ export default function Booking() {
   // Zeitslots vom Server
   const [slots, setSlots] = useState<TimeSlot[]>([]);
   const [loadingSlots, setLoadingSlots] = useState<boolean>(false);
+  const [dayBlockedInfo, setDayBlockedInfo] = useState<{ isBlocked: boolean; reason: string | null } | null>(null);
 
   // Kontaktdaten Formular
   const [name, setName] = useState("");
@@ -124,6 +125,7 @@ export default function Booking() {
     setLoadingSlots(true);
     setSelectedTime("");
     setErrorMsg(null);
+    setDayBlockedInfo(null);
 
     fetch(`/api/bookings/slots?date=${selectedDate}`, { cache: "no-store" })
       .then(async (res) => {
@@ -137,6 +139,10 @@ export default function Booking() {
         if (!isMounted) return;
         if (data.slots && Array.isArray(data.slots)) {
           setSlots(data.slots);
+          setDayBlockedInfo({
+            isBlocked: !!data.isDayBlocked,
+            reason: data.blockedReason || null,
+          });
           // Automatisch den ersten freien Slot vorwählen
           const firstFree = data.slots.find((s: TimeSlot) => s.available);
           if (firstFree) {
@@ -144,6 +150,7 @@ export default function Booking() {
           }
         } else {
           setSlots([]);
+          setDayBlockedInfo(null);
         }
       })
       .catch((err) => {
@@ -441,6 +448,31 @@ export default function Booking() {
             {loadingSlots ? (
               <div className="h-20 flex items-center justify-center rounded-xl border border-white/5 bg-matte/30">
                 <Loader2 size={20} className="animate-spin text-amber" />
+              </div>
+            ) : dayBlockedInfo?.isBlocked ? (
+              <div className="rounded-2xl border border-amber/40 bg-gradient-to-b from-amber/10 to-transparent p-5 text-center space-y-2">
+                <div className="flex items-center justify-center gap-2 text-amber font-bold text-sm">
+                  <AlertCircle size={18} className="text-amber shrink-0" />
+                  <span>Dieser Tag ist für Online-Buchungen gesperrt</span>
+                </div>
+                <p className="text-xs text-muted leading-relaxed">
+                  {dayBlockedInfo.reason
+                    ? `Hinweis vom Studio: ${dayBlockedInfo.reason}`
+                    : "Das Studio ist an diesem Tag geschlossen oder vergibt keine Online-Termine."}
+                </p>
+                <p className="text-[11px] text-amber/90 font-semibold pt-1">
+                  👉 Bitte wähle oben ein anderes Wunschdatum aus.
+                </p>
+              </div>
+            ) : slots.every((s) => !s.available) ? (
+              <div className="rounded-2xl border border-white/10 bg-matte/40 p-5 text-center space-y-2">
+                <div className="flex items-center justify-center gap-2 text-warm font-bold text-sm">
+                  <AlertCircle size={18} className="text-amber shrink-0" />
+                  <span>Alle Termine an diesem Tag sind vergeben</span>
+                </div>
+                <p className="text-xs text-muted leading-relaxed">
+                  Für dieses Datum sind leider alle Zeitslots belegt. Bitte wähle ein anderes Wunschdatum aus den nächsten Tagen.
+                </p>
               </div>
             ) : slots.length === 0 ? (
               <div className="rounded-xl border border-white/5 bg-matte/40 p-4 text-center text-xs text-muted">

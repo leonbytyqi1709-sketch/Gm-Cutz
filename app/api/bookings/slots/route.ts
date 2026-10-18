@@ -50,8 +50,9 @@ export async function GET(request: Request) {
 
     // Bestehende Buchungen für dieses Datum abrufen
     let bookedTimes = new Set<string>();
+    let existingBookings: any[] = [];
     try {
-      const existingBookings = await getBookingsByDate(dateStr);
+      existingBookings = await getBookingsByDate(dateStr);
       bookedTimes = new Set(existingBookings.map((b) => b.time));
     } catch (dbErr) {
       console.error("[Slots API] Error fetching booked times:", dbErr);
@@ -62,16 +63,33 @@ export async function GET(request: Request) {
     const isToday = dateStr === todayStr;
     const isPast = dateStr < todayStr;
 
+    // Erkennen, ob der Tag vom Studio gesperrt wurde (Urlaub, freier Tag, Feierabend)
+    const blockedBooking = existingBookings.find(
+      (b) =>
+        b.status === "blocked" &&
+        (b.id?.startsWith("GM-LOCK-") ||
+          b.name?.includes("STUDIO GESPERRT") ||
+          b.service?.toLowerCase().includes("gesperrt") ||
+          b.service?.toLowerCase().includes("feierabend") ||
+          (b.notes &&
+            (b.notes.toLowerCase().includes("gesperrt") ||
+              b.notes.toLowerCase().includes("feierabend") ||
+              b.notes.toLowerCase().includes("urlaub") ||
+              b.notes.toLowerCase().includes("frei"))))
+    );
+    const isDayBlocked = !!blockedBooking;
+    const blockedReason = blockedBooking?.notes || "Studio an diesem Tag geschlossen";
+
     const slots = baseSlots.map((time) => {
       let isAvailable = !bookedTimes.has(time);
 
-      if (isPast) {
+      if (isPast || isDayBlocked) {
         isAvailable = false;
       } else if (isToday) {
         const [h, m] = time.split(":").map(Number);
         const slotMinutes = h * 60 + m;
-        // Mindestens 30 Minuten Vorlaufzeit bei heutigen Buchungen
-        if (slotMinutes <= currentMinutes + 30) {
+        // Mindestens 120 Minuten (2 Std.) Vorlaufzeit bei heutigen Buchungen
+        if (slotMinutes <= currentMinutes + 120) {
           isAvailable = false;
         }
       }
@@ -82,9 +100,14 @@ export async function GET(request: Request) {
       };
     });
 
+    const allBooked = slots.length > 0 && slots.every((s) => !s.available);
+
     return NextResponse.json(
       {
         date: dateStr,
+        isDayBlocked,
+        blockedReason: isDayBlocked ? blockedReason : null,
+        allBooked,
         slots,
       },
       {
