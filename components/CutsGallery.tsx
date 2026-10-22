@@ -22,11 +22,12 @@ export const cutsData: CutImageItem[] = [
   { id: "taper-5", src: "/images/cuts/taper-fade-5.jpg", category: "Taper Fade", alt: "Taper Fade Signature Cut" },
   { id: "taper-6", src: "/images/cuts/taper-fade-6.jpg", category: "Taper Fade", alt: "Taper Fade Signature Cut" },
 
-  // Mid Fade (4)
+  // Mid Fade (5)
   { id: "mid-1", src: "/images/cuts/mid-fade-1.jpg", category: "Mid Fade", alt: "Mid Fade Signature Cut" },
   { id: "mid-2", src: "/images/cuts/mid-fade-2.jpg", category: "Mid Fade", alt: "Mid Fade Signature Cut" },
   { id: "mid-3", src: "/images/cuts/mid-fade-3.jpg", category: "Mid Fade", alt: "Mid Fade Signature Cut" },
   { id: "mid-5", src: "/images/cuts/mid-fade-5.jpg", category: "Mid Fade", alt: "Mid Fade Signature Cut" },
+  { id: "mid-6", src: "/images/cuts/mid-fade-6.jpg", category: "Mid Fade", alt: "Mid Fade Signature Cut" },
 
   // Burst Fade (3)
   { id: "burst-1", src: "/images/cuts/burstfade-1.jpg", category: "Burst Fade", alt: "Burst Fade Signature Cut" },
